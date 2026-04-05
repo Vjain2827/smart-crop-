@@ -49,7 +49,7 @@ app.post("/verify-otp", (req, res) => {
 
     if (
       otpStore[phone] &&
-      otpStore[phone].otp == otp &&
+      String(otpStore[phone].otp) === String(otp)&&
       otpStore[phone].expires > Date.now()
     ) {
       delete otpStore[phone];
@@ -67,6 +67,27 @@ app.post("/verify-otp", (req, res) => {
 // Start server (IMPORTANT for Render)
 const PORT = process.env.PORT || 5000;
 
+app.post("/analyze", (req, res) => {
+  try {
+    const inputs = req.body;
+
+    console.log("Analyze request received:", inputs);
+
+    res.json({
+      success: true,
+      message: "Analysis received"
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
 app.listen(PORT, () => {
   console.log("🚀 Server running on port " + PORT);
 });
+

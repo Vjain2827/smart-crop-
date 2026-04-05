@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Crop Advisor | फसल सलाहकार</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+<script>
+  if (localStorage.getItem("isLoggedIn") === "true") {
+    window.location.href = "index.html";
+  }
+</script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🌾</div>
+      <div class="brand-text">
+        <h1 id="app-title">Smart Crop Advisor</h1>
+        <div class="sub" id="app-sub">AI-Powered Farming Intelligence</div>
+      </div>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+      
+    </div>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
+</header>
+
+<div class="hero-strip" id="hero-strip">
+  🌱 Enter your field details below and get personalized crop recommendations
+</div>
+
+<main class="main">
+  <div class="section-label" id="form-label">RECOMMENDATION ENGINE</div>
+  <h2 class="section-title" id="form-title">Tell us about your field</h2>
+  <p class="section-desc" id="form-desc">Fill in your soil conditions, local weather, and preferences to receive data-driven crop suggestions tailored to your land.</p>
+
+  <!-- FORM -->
+  <div class="form-grid">
+
+    <!-- SOIL CARD -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <div class="form-card-icon icon-soil">🪨</div>
+        <span id="soil-title">Soil Parameters</span>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-area">Field Area</label>
+        <div class="unit-wrap">
+          <input type="number" id="field-area" placeholder="e.g. 2.5" min="0.1" step="0.1">
+          <span class="unit-tag" id="unit-area">acres</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-soil-type">Soil Type</label>
+        <select id="soil-type">
+          <option value="" id="opt-select">-- Select --</option>
+          <option value="alluvial">Alluvial</option>
+          <option value="black">Black (Regur)</option>
+          <option value="red">Red Laterite</option>
+          <option value="sandy">Sandy</option>
+          <option value="clayey">Clayey</option>
+          <option value="loamy">Loamy</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-ph">Soil pH</label>
+        <div class="unit-wrap">
+          <input type="number" id="soil-ph" placeholder="e.g. 6.5" min="4" max="9" step="0.1">
+          <span class="unit-tag">pH</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-nitrogen">Nitrogen (N)</label>
+        <div class="unit-wrap">
+          <input type="number" id="nitrogen" placeholder="e.g. 140" min="0">
+          <span class="unit-tag">kg/ha</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-phosphorus">Phosphorus (P)</label>
+        <div class="unit-wrap">
+          <input type="number" id="phosphorus" placeholder="e.g. 60" min="0">
+          <span class="unit-tag">kg/ha</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-potassium">Potassium (K)</label>
+        <div class="unit-wrap">
+          <input type="number" id="potassium" placeholder="e.g. 80" min="0">
+          <span class="unit-tag">kg/ha</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEATHER CARD -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <div class="form-card-icon icon-weather">🌤️</div>
+        <span id="weather-title">Weather Conditions</span>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-state">State / Region</label>
+        <select id="state">
+          <option value="">-- Select State --</option>
+          <option value="punjab">Punjab</option>
+          <option value="haryana">Haryana</option>
+          <option value="up">Uttar Pradesh</option>
+          <option value="mp">Madhya Pradesh</option>
+          <option value="maharashtra">Maharashtra</option>
+          <option value="gujarat">Gujarat</option>
+          <option value="rajasthan">Rajasthan</option>
+          <option value="wb">West Bengal</option>
+          <option value="ap">Andhra Pradesh</option>
+          <option value="karnataka">Karnataka</option>
+          <option value="tn">Tamil Nadu</option>
+          <option value="bihar">Bihar</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-season">Current Season</label>
+        <select id="season">
+          <option value="">-- Select Season --</option>
+          <option value="kharif">Kharif (Jun–Oct)</option>
+          <option value="rabi">Rabi (Nov–Apr)</option>
+          <option value="zaid">Zaid (Apr–Jun)</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-temp">Average Temperature</label>
+        <div class="unit-wrap">
+          <input type="number" id="temperature" placeholder="e.g. 28" min="-5" max="50">
+          <span class="unit-tag">°C</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-rainfall">Annual Rainfall</label>
+        <div class="unit-wrap">
+          <input type="number" id="rainfall" placeholder="e.g. 850" min="0">
+          <span class="unit-tag">mm</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-humidity">Humidity</label>
+        <div class="unit-wrap">
+          <input type="number" id="humidity" placeholder="e.g. 65" min="0" max="100">
+          <span class="unit-tag">%</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-irrigation">Irrigation Available</label>
+        <select id="irrigation">
+          <option value="">-- Select --</option>
+          <option value="canal">Canal</option>
+          <option value="borewell">Borewell / Tubewell</option>
+          <option value="rainfed">Rain-fed Only</option>
+          <option value="drip">Drip / Sprinkler</option>
+          <option value="pond">Pond / Tank</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- FARMER PREF CARD -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <div class="form-card-icon icon-crop">🌿</div>
+        <span id="pref-title">Farmer Preferences</span>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-budget">Budget per Acre</label>
+        <div class="unit-wrap">
+          <input type="number" id="budget" placeholder="e.g. 15000" min="0">
+          <span class="unit-tag">₹</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-market">Nearest Market</label>
+        <select id="market">
+          <option value="">-- Select --</option>
+          <option value="local">Local Mandi (&lt;20 km)</option>
+          <option value="district">District Market (20–80 km)</option>
+          <option value="metro">Metro / Export (80+ km)</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-prev-crop">Previous Crop Grown</label>
+        <select id="prev-crop">
+          <option value="">-- None / First Time --</option>
+          <option value="wheat">Wheat</option>
+          <option value="rice">Rice / Paddy</option>
+          <option value="cotton">Cotton</option>
+          <option value="maize">Maize</option>
+          <option value="sugarcane">Sugarcane</option>
+          <option value="soybean">Soybean</option>
+          <option value="pulses">Pulses</option>
+          <option value="vegetables">Vegetables</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-goal">Primary Goal</label>
+        <select id="goal">
+          <option value="">-- Select --</option>
+          <option value="income">Maximum Income</option>
+          <option value="food">Family Food Security</option>
+          <option value="soil">Soil Health / Rotation</option>
+          <option value="export">Export Quality</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label id="lbl-exp">Farming Experience</label>
+        <select id="experience">
+          <option value="">-- Select --</option>
+          <option value="beginner">Beginner (0–3 yrs)</option>
+          <option value="moderate">Moderate (3–10 yrs)</option>
+          <option value="expert">Expert (10+ yrs)</option>
+        </select>
+      </div>
+    </div>
+
+  </div><!-- /form-grid -->
+
+  <div class="submit-row">
+    <button class="btn-submit" id="submit-btn" onclick="analyzeAndRecommend()">
+      <div class="spinner"></div>
+      <span class="btn-text" id="btn-label">🌾 Get Crop Recommendations</span>
+    </button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-section">
+    <div class="result-header">
+      <div>
+        <div class="section-label" id="res-label">RECOMMENDATION RESULTS</div>
+        <h2 class="section-title" id="res-title">Best Crops For Your Field</h2>
+      </div>
+      <div class="result-badge" id="res-badge">AI Analyzed</div>
+    </div>
+
+    <div class="crops-grid" id="crops-grid"></div>
+
+    <div class="advisory-card" id="advisory-card">
+      <div class="advisory-block">
+        <h4 id="adv-title1">Field Advisory</h4>
+        <p id="adv-text1"></p>
+      </div>
+      <div class="advisory-block">
+        <h4 id="adv-title2">Recommended Practices</h4>
+        <ul class="advisory-list" id="adv-list2"></ul>
+      </div>
+    </div>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</main>
+
+<footer>
+  <p>🌾 Smart Crop Advisor &nbsp;|&nbsp; <span>Empowering Farmers with Data</span> &nbsp;|&nbsp; किसान सशक्तिकरण</p>
+</footer>
+
+<script>
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+<script src="script.js"></script>
+</body>
+</html>
